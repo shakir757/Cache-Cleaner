@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/cache"
+        android:title="Clean cache"
+        android:icon="@drawable/ic_clean_foreground"/>
+    <item
+        android:id="@+id/battery"
+        android:title="Battery"
+        android:icon="@drawable/ic_battery_foreground"/>
+</menu>
