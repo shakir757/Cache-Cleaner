@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.cache.cleaner.start.app.fragments.BatteryFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         switch (item.getItemId()) {
             case R.id.cache:
+                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheFragment).commit();
                 return true;
 
