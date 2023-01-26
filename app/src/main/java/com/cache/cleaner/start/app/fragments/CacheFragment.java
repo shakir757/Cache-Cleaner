@@ -75,7 +75,6 @@ public class CacheFragment extends Fragment{
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                new LoadApplications().execute();
             }
         });
     }
