@@ -68,7 +68,7 @@ public class CacheFragment extends Fragment{
             if (  (packInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
             {
                 String appName = packInfo.applicationInfo.loadLabel(getContext().getPackageManager()).toString();
-                Log.e("App№ " + Integer.toString(i), appName);
+                Log.d("App N" + Integer.toString(i), appName);
             }
         }
 
