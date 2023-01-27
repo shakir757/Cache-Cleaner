@@ -1,12 +1,10 @@
 package com.cache.cleaner.start.app.fragments;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.cache.cleaner.start.app.R;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import pl.droidsonroids.gif.GifImageView;
 
 public class CacheFragment extends Fragment{
@@ -67,8 +60,10 @@ public class CacheFragment extends Fragment{
             PackageInfo packInfo = packList.get(i);
             if (  (packInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
             {
+                String appPath = packInfo.applicationInfo.packageName;
                 String appName = packInfo.applicationInfo.loadLabel(getContext().getPackageManager()).toString();
                 Log.d("App N" + Integer.toString(i), appName);
+                Log.d("App Path" + Integer.toString(i), appPath);
             }
         }
 
@@ -78,5 +73,4 @@ public class CacheFragment extends Fragment{
             }
         });
     }
-
 }
