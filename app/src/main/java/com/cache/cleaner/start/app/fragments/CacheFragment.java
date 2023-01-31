@@ -26,6 +26,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.cache.cleaner.start.app.PermissionUtils;
 import com.cache.cleaner.start.app.R;
 
 import java.io.File;
@@ -37,6 +39,7 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class CacheFragment extends Fragment{
     private PackageManager packageManager = null;
+    private static final int PERMISSION_STORAGE = 101;
     private List applist = null;
     private File filePath = new File(Environment.getExternalStorageDirectory()+"/");
 
@@ -84,13 +87,37 @@ public class CacheFragment extends Fragment{
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/file.mp3";
-                File file = new File(filePath);
-                if (file.exists()) {
-                    file.delete();
-                }
+                if (PermissionUtils.hasPermissions(getContext())) return;
+                PermissionUtils.requestPermissions(getActivity(), PERMISSION_STORAGE);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PERMISSION_STORAGE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (PermissionUtils.hasPermissions(getContext())) {
+                    Toast.makeText(getContext(), "Разрешение получено", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Разрешение не получено", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getContext(), "Разрешение получено", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Разрешение не получено", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 
