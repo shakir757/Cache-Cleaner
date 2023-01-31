@@ -84,6 +84,11 @@ public class CacheFragment extends Fragment{
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/file.mp3";
+                File file = new File(filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
             }
         });
     }
