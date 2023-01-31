@@ -1,7 +1,9 @@
 package com.cache.cleaner.start.app.fragments;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.content.Context.ACTIVITY_SERVICE;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,8 +27,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.cache.cleaner.start.app.FileListActivity;
 import com.cache.cleaner.start.app.PermissionUtils;
 import com.cache.cleaner.start.app.R;
 
@@ -40,19 +45,18 @@ import pl.droidsonroids.gif.GifImageView;
 public class CacheFragment extends Fragment{
     private PackageManager packageManager = null;
     private static final int PERMISSION_STORAGE = 101;
-    private List applist = null;
-    private File filePath = new File(Environment.getExternalStorageDirectory()+"/");
+
+    Context context;
 
 
 
     public CacheFragment() {
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cache, container, false);
-
-
     }
 
     @Override
@@ -70,27 +74,54 @@ public class CacheFragment extends Fragment{
         List<PackageInfo> packList = getContext().getPackageManager().getInstalledPackages(0);
         ArrayList<String> packages = new ArrayList<String>();
 
+        if (PermissionUtils.hasPermissions(getContext())) return;
+        PermissionUtils.requestPermissions(getActivity(), PERMISSION_STORAGE);
 
-
-        for (int i=0; i < packList.size(); i++)
-        {
-            PackageInfo packInfo = packList.get(i);
-            if ((packInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)
-            {
-                String pack = packInfo.applicationInfo.packageName;
-                packages.add(pack);
-                String appName = packInfo.applicationInfo.loadLabel(getContext().getPackageManager()).toString();
-                Log.e("AppN" + Integer.toString(i), packages.toString());
-            }
-        }
+        String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
+        File root = new File(path);
+        File[] filesAndFolders = root.listFiles();
+        Toast.makeText(context, ""+filesAndFolders.toString(), Toast.LENGTH_SHORT).show();
 
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (PermissionUtils.hasPermissions(getContext())) return;
-                PermissionUtils.requestPermissions(getActivity(), PERMISSION_STORAGE);
+                if(checkPermission()){
+                    Intent intent = new Intent(getContext(), FileListActivity.class);
+                    String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
+                    intent.putExtra("path",path);
+                    startActivity(intent);
+//                    deleteFiles(filesAndFolders);
+                }else{
+                    requestPermission();
+
+                }
             }
         });
+    }
+
+    public void  deleteFiles(File[] filesAndFolders) {
+        int len = filesAndFolders.length;
+        for(int position = 0; position <= len; position++){
+            File selectedFile = filesAndFolders[position];
+            Toast.makeText(context, selectedFile.getName().toString(), Toast.LENGTH_SHORT).show();
+//            selectedFile.delete();
+        }
+    }
+
+
+    private boolean checkPermission(){
+        int result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }else
+            return false;
+    }
+
+    private void requestPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+//            Toast.makeText(getContext().this,"Storage permission is requires,please allow from settings",Toast.LENGTH_SHORT).show();
+        }else
+            ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},111);
     }
 
     @Override
@@ -107,7 +138,6 @@ public class CacheFragment extends Fragment{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                      @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_STORAGE) {
@@ -119,31 +149,4 @@ public class CacheFragment extends Fragment{
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
-
-//    public static void deleteCache(Context context) {
-//        try {
-//            File dir = context.getCacheDir();
-//            deleteDir(dir);
-//        } catch (Exception e) { e.printStackTrace();}
-//    }
-//
-//    public static boolean deleteDir(File dir) {
-//        if (dir != null && dir.isDirectory()) {
-//            String[] children = dir.list();
-//            for (int i = 0; i < children.length; i++) {
-//                boolean success = deleteDir(new File(dir, children[i]));
-//                if (!success) {
-//                    return false;
-//                }
-//            }
-//            return dir.delete();
-//        } else if(dir!= null && dir.isFile()) {
-//            return dir.delete();
-//        } else {
-//            return false;
-//        }
-//    }
-
 }
