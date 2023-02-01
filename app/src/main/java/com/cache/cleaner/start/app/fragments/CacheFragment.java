@@ -31,12 +31,6 @@ import java.util.List;
 import pl.droidsonroids.gif.GifImageView;
 
 public class CacheFragment extends Fragment{
-    private PackageManager packageManager = null;
-    private List applist = null;
-    File[] filesAndFolders;
-
-
-
 
     public CacheFragment() {
     }
@@ -44,13 +38,13 @@ public class CacheFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cache, container, false);
-
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String[] paths = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
 
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
         TextView tvPoints = view.findViewById(R.id.text_view_balance_points); // Points of user
@@ -66,18 +60,45 @@ public class CacheFragment extends Fragment{
         String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
         File root = new File(path);
         File[] filesAndFolders = root.listFiles();
+
+//        String path_telegram = Environment.getExternalStorageDirectory().getPath()+"/Telegram";
+//        File root_telegram = new File(path_telegram);
+//        File[] filesAndFolders_telegram = root_telegram.listFiles();
+
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(checkPermission()){
-                    deleteFiles(filesAndFolders);
+                    deleteTelegramCache(paths);
+                    deleteDownloadedFiles(filesAndFolders);
                 }else{
                     requestPermission();
                 }
             }
         });
     }
-    public void deleteFiles(File[] filesAndFolders){
+
+    public void deleteTelegramCache(String[] paths){
+        for(int path_pos = 0; path_pos < paths.length; path_pos++){
+            File root = new File(paths[path_pos]);
+            File[] media_tg = root.listFiles();
+            int len = 0;
+            if (media_tg != null) {
+                len = media_tg.length;
+            }
+            for(int position = 0; position < len; position++){
+                File selectedFile = media_tg[position];
+                Log.e("file: ", String.valueOf(selectedFile));
+                boolean deleted = selectedFile.delete();
+                if(deleted){
+                    Toast.makeText(getContext(),"DELETED ",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
+    public void deleteDownloadedFiles(File[] filesAndFolders){
         int len = filesAndFolders.length;
         for(int position = 0; position < len; position++){
             Log.e("file: ", String.valueOf(filesAndFolders[position]));
@@ -86,7 +107,6 @@ public class CacheFragment extends Fragment{
                 Toast.makeText(getContext(),"DELETED ",Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     private boolean checkPermission(){

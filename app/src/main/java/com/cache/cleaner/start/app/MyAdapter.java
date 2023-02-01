@@ -69,40 +69,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             }
         });
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
 
-                PopupMenu popupMenu = new PopupMenu(context,v);
-                popupMenu.getMenu().add("DELETE");
-                popupMenu.getMenu().add("MOVE");
-                popupMenu.getMenu().add("RENAME");
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getTitle().equals("DELETE")){
-                            boolean deleted = selectedFile.delete();
-                            if(deleted){
-                                Toast.makeText(context.getApplicationContext(),"DELETED ",Toast.LENGTH_SHORT).show();
-                                v.setVisibility(View.GONE);
-                            }
-                        }
-                        if(item.getTitle().equals("MOVE")){
-                            Toast.makeText(context.getApplicationContext(),"MOVED ",Toast.LENGTH_SHORT).show();
-
-                        }
-                        if(item.getTitle().equals("RENAME")){
-                            Toast.makeText(context.getApplicationContext(),"RENAME ",Toast.LENGTH_SHORT).show();
-
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
-                return true;
-            }
-        });
     }
 
     @Override
