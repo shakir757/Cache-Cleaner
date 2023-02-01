@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32147744" />
+        app:layout_constraintGuide_percent="0.32" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_g_68"
@@ -53,7 +53,7 @@
             android:background="@drawable/bg_button_cleaning_cache">
 
             <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/gif_load"
+                android:id="@+id/gif_load_cache"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/load_gif"
@@ -61,12 +61,12 @@
                 android:visibility="invisible"/>
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress_circular_bar"
+                android:id="@+id/progress_circular_bar_cache"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 app:indicatorColor="#00C3FF"
                 app:trackColor="#270303"
-                android:progress="75"
+                android:progress="0"
                 app:indicatorSize="300dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -99,7 +99,6 @@
         android:text="0 %"
         android:textSize="24sp"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/button_get_points"
         app:layout_constraintBottom_toTopOf="@+id/guideline_g_32"
         app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
         app:layout_constraintStart_toStartOf="@+id/guideline_v_20"/>
@@ -114,32 +113,5 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
         app:layout_constraintStart_toEndOf="@+id/guideline_v_20"
         app:layout_constraintTop_toBottomOf="@+id/button_start_clean_cache" />
-
-    <TextView
-        android:id="@+id/text_view_balance_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Balance: 0 points"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        app:layout_constraintVertical_chainStyle="spread_inside"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
-        app:layout_constraintStart_toStartOf="@+id/guideline_v_20"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_get_points"/>
-
-    <Button
-        android:id="@+id/button_get_points"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:background="@drawable/bg_button_get_points"
-        android:text="get points"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_percents"
-        app:layout_constraintEnd_toEndOf="@+id/text_view_balance_points"
-        app:layout_constraintStart_toStartOf="@+id/text_view_balance_points"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_balance_points" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

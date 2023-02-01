@@ -51,7 +51,7 @@ public class BatteryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button battery = view.findViewById(R.id.battery_btn);
+        Button battery = view.findViewById(R.id.button_battery);
         Brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0
         );
 

@@ -1,16 +1,8 @@
 package com.cache.cleaner.start.app.fragments;
 
-import static android.content.Context.ACTIVITY_SERVICE;
-
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -18,10 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +21,6 @@ import com.cache.cleaner.start.app.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -60,8 +49,8 @@ public class CacheFragment extends Fragment{
         TextView tvPoints = view.findViewById(R.id.text_view_balance_points); // Points of user
         Button btnStartCleanCache = view.findViewById(R.id.button_start_clean_cache); // Start Clean Cache
         Button btnGetPoints = view.findViewById(R.id.button_get_points); // Get start ads for user
-        ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar); // Progress bar of cache
-        GifImageView gifLoad = view.findViewById(R.id.gif_load); // Gif animation, enable at loading
+        ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_cache); // Progress bar of cache
+        GifImageView gifLoad = view.findViewById(R.id.gif_load_cache); // Gif animation, enable at loading
 
 
         List<PackageInfo> packList = getContext().getPackageManager().getInstalledPackages(0);
