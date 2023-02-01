@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.cache.cleaner.start.app.FileListActivity;
 import com.cache.cleaner.start.app.R;
 
 import java.io.File;
@@ -53,17 +52,12 @@ public class CacheFragment extends Fragment{
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_cache); // Progress bar of cache
         GifImageView gifLoad = view.findViewById(R.id.gif_load_cache); // Gif animation, enable at loading
 
-
         List<PackageInfo> packList = getContext().getPackageManager().getInstalledPackages(0);
         ArrayList<String> packages = new ArrayList<String>();
 
         String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
         File root = new File(path);
         File[] filesAndFolders = root.listFiles();
-
-//        String path_telegram = Environment.getExternalStorageDirectory().getPath()+"/Telegram";
-//        File root_telegram = new File(path_telegram);
-//        File[] filesAndFolders_telegram = root_telegram.listFiles();
 
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +90,6 @@ public class CacheFragment extends Fragment{
             }
         }
     }
-
 
     public void deleteDownloadedFiles(File[] filesAndFolders){
         int len = filesAndFolders.length;
