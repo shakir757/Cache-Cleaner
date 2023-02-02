@@ -46,8 +46,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
                 return true;
 
-
         }
         return false;
     }
+
+    @Override
+    public void onBackPressed() {}
 }
