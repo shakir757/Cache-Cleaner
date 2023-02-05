@@ -36,13 +36,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-//google ads banner
+        // google ads banner
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
-//google ads Interstitial
+
+        // google ads Interstitial
         final InterstitialAd inter = adsManager.createInterstitialAd();
-//initializing elements
+
+        // initializing elements
         get_points_btn = findViewById(R.id.button_get_points);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
