@@ -3,18 +3,21 @@ package com.cache.cleaner.start.app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.cache.cleaner.start.app.fragments.BatteryFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     BottomNavigationView bottomNavigationView;
-
+    Button get_points_btn;
     AdView adview;
 
 
@@ -25,15 +28,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
-//google ads
+//google ads banner
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
+//google ads Interstitial
+        final InterstitialAd inter = adsManager.createInterstitialAd();
 
-
+        get_points_btn = findViewById(R.id.button_get_points);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.cache);
+
+        get_points_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (inter != null) {
+                    inter.show(MainActivity.this);
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                }
+            }
+        });
 
     }
     CacheFragment cacheFragment = new CacheFragment();

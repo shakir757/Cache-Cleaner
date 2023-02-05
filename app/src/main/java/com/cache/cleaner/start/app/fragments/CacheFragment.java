@@ -59,6 +59,7 @@ public class CacheFragment extends Fragment{
         File root = new File(path);
         File[] filesAndFolders = root.listFiles();
 
+
         btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

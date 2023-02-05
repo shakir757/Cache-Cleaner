@@ -39,7 +39,6 @@ public class BatteryFragment extends Fragment {
     int Brightness;
     LocationManager locationManager ;
     boolean GpsStatus ;
-
     public BatteryFragment() {
     }
 
