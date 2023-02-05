@@ -1,13 +1,10 @@
 package com.cache.cleaner.start.app;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,7 +32,7 @@ public class AdsManager {
     public InterstitialAd createInterstitialAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        InterstitialAd.load(ctx,"ca-app-pub-3940256099942544/1033173712", adRequest,
+        InterstitialAd.load(ctx,"ca-app-pub-8657317529631499/1700655940", adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -59,13 +56,13 @@ public class AdsManager {
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
-//                Toast.makeText(ctx, ""+loadAdError.getCode(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, loadAdError.toString());
             }
 
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-//                Toast.makeText(ctx, "ads loaded", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "onAdLoaded");
             }
         });
         adview.loadAd(adRequest);

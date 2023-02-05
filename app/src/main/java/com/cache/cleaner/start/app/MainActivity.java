@@ -11,6 +11,9 @@ import android.widget.Button;
 import com.cache.cleaner.start.app.fragments.BatteryFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Button get_points_btn;
     AdView adview;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +30,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 //google ads banner
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
 //google ads Interstitial
         final InterstitialAd inter = adsManager.createInterstitialAd();
-
+//initializing elements
         get_points_btn = findViewById(R.id.button_get_points);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -50,23 +58,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             }
         });
-
     }
+
     CacheFragment cacheFragment = new CacheFragment();
     BatteryFragment batteryFragment = new BatteryFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.cache:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheFragment).commit();
                 return true;
-
             case R.id.battery:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
                 return true;
-
         }
         return false;
     }
