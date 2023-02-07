@@ -1,42 +1,31 @@
 package com.cache.cleaner.start.app.fragments;
 
-import static android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cache.cleaner.start.app.R;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Date;
+import pl.droidsonroids.gif.GifImageView;
 
 
 public class BatteryFragment extends Fragment {
 
-    int Brightness;
+    int brightness;
     LocationManager locationManager ;
     boolean GpsStatus ;
     public BatteryFragment() {
@@ -50,12 +39,15 @@ public class BatteryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button battery = view.findViewById(R.id.button_battery);
-        Brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0
-        );
 
+        Button btnBattery = view.findViewById(R.id.button_battery);
+        TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
+        ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_battery); // Progress bar of cache
+        GifImageView gifLoad = view.findViewById(R.id.gif_load_battery); // Gif animation, enable at loading
 
-        battery.setOnClickListener(new View.OnClickListener() {
+        brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
+
+        btnBattery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 light();

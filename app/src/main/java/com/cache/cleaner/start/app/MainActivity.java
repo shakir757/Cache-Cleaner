@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.cache.cleaner.start.app.fragments.BatteryFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
+import com.cache.cleaner.start.app.fragments.SpeedFragment;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
+
+        TextView tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
+        Button btnGetPoints = findViewById(R.id.button_get_points); // Get start ads for user
 
         MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
             @Override
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     CacheFragment cacheFragment = new CacheFragment();
     BatteryFragment batteryFragment = new BatteryFragment();
+    SpeedFragment speedFragment = new SpeedFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -73,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.battery:
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
+                return true;
+            case R.id.speed:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, speedFragment).commit();
                 return true;
         }
         return false;

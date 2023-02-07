@@ -2,50 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragments.CacheFragment">
+    android:background="@drawable/bg_main">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_v_20"
+        android:id="@+id/guideline_v_20_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.2" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_v_80"
+        android:id="@+id/guideline_v_80_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.8" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_g_32"
+        android:id="@+id/guideline_g_32_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.32" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_g_68"
+        android:id="@+id/guideline_g_68_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.68" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/card_view_speed"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:cardCornerRadius="300dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_g_68"
-        app:layout_constraintTop_toTopOf="@id/guideline_g_32"
-        app:layout_constraintStart_toStartOf="@id/guideline_v_20"
-        app:layout_constraintEnd_toEndOf="@id/guideline_v_80">
+        app:layout_constraintBottom_toBottomOf="@id/guideline_g_68_3"
+        app:layout_constraintTop_toTopOf="@id/guideline_g_32_3"
+        app:layout_constraintStart_toStartOf="@id/guideline_v_20_3"
+        app:layout_constraintEnd_toEndOf="@id/guideline_v_80_3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -53,7 +52,7 @@
             android:background="@drawable/bg_button_cleaning_cache">
 
             <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/gif_load_cache"
+                android:id="@+id/gif_load_speed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/load_gif"
@@ -61,7 +60,7 @@
                 android:visibility="invisible"/>
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progress_circular_bar_cache"
+                android:id="@+id/progress_circular_bar_speed"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 app:indicatorColor="#00C3FF"
@@ -74,47 +73,47 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/cleaning"
-            android:layout_margin="32dp"/>
+            android:src="@drawable/speed"
+            android:layout_margin="48dp"/>
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/button_to_categories_cache"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_button_cleaning_cache"
-        android:text="Start Clean Cache"
-        android:fontFamily="@font/milliard"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
-        app:layout_constraintStart_toEndOf="@+id/guideline_v_20"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_g_68"
-        app:layout_constraintBottom_toTopOf="@id/text_view_cost_points" />
-
     <TextView
-        android:id="@+id/text_view_percents"
+        android:id="@+id/text_view_percents_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 %"
-        android:fontFamily="@font/milliard"
         android:textSize="24sp"
+        android:fontFamily="@font/milliard"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_g_32"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
-        app:layout_constraintStart_toStartOf="@+id/guideline_v_20"/>
+        app:layout_constraintBottom_toTopOf="@+id/guideline_g_32_3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80_3"
+        app:layout_constraintStart_toStartOf="@+id/guideline_v_20_3"/>
+
+    <Button
+        android:id="@+id/button_speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_cleaning_cache"
+        android:text="Start increasing speed"
+        android:fontFamily="@font/milliard"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80_3"
+        app:layout_constraintStart_toEndOf="@+id/guideline_v_20_3"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_g_68_3"
+        app:layout_constraintBottom_toTopOf="@id/text_view_cost_points_speed" />
 
     <TextView
-        android:id="@+id/text_view_cost_points"
+        android:id="@+id/text_view_cost_points_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="10 points"
         android:fontFamily="@font/milliard"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
-        app:layout_constraintStart_toEndOf="@+id/guideline_v_20"
-        app:layout_constraintTop_toBottomOf="@+id/button_to_categories_cache" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline_v_80_3"
+        app:layout_constraintStart_toEndOf="@+id/guideline_v_20_3"
+        app:layout_constraintTop_toBottomOf="@+id/button_speed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
