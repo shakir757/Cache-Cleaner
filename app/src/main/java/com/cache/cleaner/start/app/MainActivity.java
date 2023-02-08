@@ -30,12 +30,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
-
-        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
 //google ads banner
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
