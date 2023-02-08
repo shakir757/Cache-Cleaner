@@ -79,6 +79,7 @@
     <ImageView
         android:id="@+id/button_back_to_battery"
         android:layout_width="wrap_content"
+        android:onClick="onClickButtonBattery"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back_24"
         app:layout_constraintTop_toTopOf="parent"

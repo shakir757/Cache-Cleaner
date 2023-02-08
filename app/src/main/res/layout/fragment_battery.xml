@@ -98,6 +98,7 @@
         android:background="@drawable/bg_button_cleaning_cache"
         android:text="Start saving energy"
         android:fontFamily="@font/milliard"
+        android:onClick="onClickButtonBatteryCategories"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_v_80_2"

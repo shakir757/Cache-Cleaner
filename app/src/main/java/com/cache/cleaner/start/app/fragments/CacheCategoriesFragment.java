@@ -1,19 +1,36 @@
 package com.cache.cleaner.start.app.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.cache.cleaner.start.app.CacheStatus;
+import com.cache.cleaner.start.app.MainActivity;
 import com.cache.cleaner.start.app.R;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CacheCategoriesFragment extends Fragment {
+
+    final CacheStatus cacheStatus = CacheStatus.getInstance();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cache_categories, container, false);
@@ -27,5 +44,37 @@ public class CacheCategoriesFragment extends Fragment {
         Button btnCleanFiles = view.findViewById(R.id.button_clean_files);
         Button btnCleanHiddenFiles = view.findViewById(R.id.button_clean_hidden_files);
         ImageView goBack = view.findViewById(R.id.button_back_to_cache);
+
+        String[] paths = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
+        String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
+        File root = new File(path);
+        File[] filesAndFolders = root.listFiles();
+
+        btnCleanCache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cacheStatus.set_true();
+                cacheStatus.set_function("CLEAR");
+                ((MainActivity)getActivity()).onClickButtonCache(view);
+            }
+        });
+        btnCleanFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cacheStatus.set_true();
+                cacheStatus.set_function("NONE");
+                ((MainActivity)getActivity()).onClickButtonCache(view);
+            }
+        });
+        btnCleanHiddenFiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cacheStatus.set_true();
+                cacheStatus.set_function("NONE");
+                ((MainActivity)getActivity()).onClickButtonCache(view);
+            }
+        });
     }
+
+
 }

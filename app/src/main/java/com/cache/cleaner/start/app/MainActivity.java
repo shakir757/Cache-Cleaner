@@ -8,8 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cache.cleaner.start.app.fragments.BatteryCategoriesFragment;
 import com.cache.cleaner.start.app.fragments.BatteryFragment;
+import com.cache.cleaner.start.app.fragments.CacheCategoriesFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
 import com.cache.cleaner.start.app.fragments.SpeedFragment;
 import com.google.android.gms.ads.AdView;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     BottomNavigationView bottomNavigationView;
     Button get_points_btn;
+    TextView tvPoints;
     AdView adview;
 
     @Override
@@ -33,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
 
-        TextView tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
-        Button btnGetPoints = findViewById(R.id.button_get_points); // Get start ads for user
 
         MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
             @Override
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         final InterstitialAd inter = adsManager.createInterstitialAd();
 
         // initializing elements
+        tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
         get_points_btn = findViewById(R.id.button_get_points);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -70,6 +73,40 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     CacheFragment cacheFragment = new CacheFragment();
     BatteryFragment batteryFragment = new BatteryFragment();
     SpeedFragment speedFragment = new SpeedFragment();
+    BatteryCategoriesFragment batteryCategoriesFragment = new BatteryCategoriesFragment();
+    CacheCategoriesFragment cacheCategoriesFragment = new CacheCategoriesFragment();
+
+    public void onClickButtonCacheCategories(View view){
+        set_Visibility(false);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheCategoriesFragment).commit();
+    }
+
+    public void onClickButtonBatteryCategories(View view){
+        set_Visibility(false);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryCategoriesFragment).commit();
+    }
+
+    public void onClickButtonCache(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheFragment).commit();
+        set_Visibility(true);
+    }
+
+    public void onClickButtonBattery(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
+        set_Visibility(true);
+
+    }
+
+    public void set_Visibility(Boolean mode){
+        if (mode){
+            get_points_btn.setVisibility(View.VISIBLE);
+            tvPoints.setVisibility(View.VISIBLE);
+        }
+        else{
+            get_points_btn.setVisibility(View.INVISIBLE);
+            tvPoints.setVisibility(View.INVISIBLE);
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cache.cleaner.start.app.AdsManager;
+import com.cache.cleaner.start.app.CacheStatus;
 import com.cache.cleaner.start.app.R;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+
+import java.util.Objects;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -26,10 +33,9 @@ import pl.droidsonroids.gif.GifImageView;
 public class BatteryFragment extends Fragment {
 
     int brightness;
-    LocationManager locationManager ;
-    boolean GpsStatus ;
-    public BatteryFragment() {
-    }
+    LocationManager locationManager;
+    boolean GpsStatus;
+    final CacheStatus cacheStatus =  CacheStatus.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,17 +50,37 @@ public class BatteryFragment extends Fragment {
         TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_battery); // Progress bar of cache
         GifImageView gifLoad = view.findViewById(R.id.gif_load_battery); // Gif animation, enable at loading
-
+        gifLoad.setVisibility(View.INVISIBLE);
         brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
 
-        btnBattery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                light();
-                disableBT();
-                turnGPSOff();
+        Boolean status = cacheStatus.get_cache_status();
+
+        AdsManager adsManager = new AdsManager(getContext());
+        final InterstitialAd inter = adsManager.createInterstitialAd();
+
+        if(status){
+//          тут начинается прогресс бар крутиться(ШАКИР)
+            cacheStatus.set_false(); // меняем cashStatus
+            //turn on advertising
+            if (inter != null) {
+                inter.show(getActivity());
+            } else {
+                Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
-        });
+            //activating the animation
+            gifLoad.setVisibility(View.VISIBLE);
+            //calling the battery saving function
+            if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
+                Toast.makeText(getContext(), "rferferferferfer", Toast.LENGTH_SHORT).show();
+                saveBattery();
+            }
+        }
+    }
+
+    public void saveBattery() {
+        light();
+        disableBT();
+        turnGPSOff();
     }
 
     public void light(){

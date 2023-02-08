@@ -20,18 +20,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.cache.cleaner.start.app.AdsManager;
+import com.cache.cleaner.start.app.CacheStatus;
+import com.cache.cleaner.start.app.MainActivity;
 import com.cache.cleaner.start.app.R;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import pl.droidsonroids.gif.GifImageView;
 
 public class CacheFragment extends Fragment{
-
-    public CacheFragment() {
-    }
+    final CacheStatus cacheStatus =  CacheStatus.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,32 +45,46 @@ public class CacheFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] paths = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
+        String[] paths_telegram = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
 
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
         Button btnStartCleanCache = view.findViewById(R.id.button_to_categories_cache); // Start Clean Cache
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_cache); // Progress bar of cache
         GifImageView gifLoad = view.findViewById(R.id.gif_load_cache); // Gif animation, enable at loading
-
-        List<PackageInfo> packList = getContext().getPackageManager().getInstalledPackages(0);
-        ArrayList<String> packages = new ArrayList<String>();
-
+        gifLoad.setVisibility(View.INVISIBLE);
         String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
         File root = new File(path);
-        File[] filesAndFolders = root.listFiles();
+        File[] downloaded_files = root.listFiles();
+        Boolean status = cacheStatus.get_cache_status();
+        //enabling advertising
+        AdsManager adsManager = new AdsManager(getContext());
+        final InterstitialAd inter = adsManager.createInterstitialAd();
 
-
-        btnStartCleanCache.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(checkPermission()){
-                    deleteTelegramCache(paths);
-                    deleteDownloadedFiles(filesAndFolders);
-                }else{
-                    requestPermission();
-                }
+        if(status){
+//          тут начинается прогресс бар крутиться(ШАКИР)
+            cacheStatus.set_false(); // меняем cashStatus
+            //turn on advertising
+            if (inter != null) {
+                inter.show(getActivity());
+            } else {
+                Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
-        });
+            //активируем анимацию
+            gifLoad.setVisibility(View.VISIBLE);
+            //вызываем функцию отчистки кэша
+            if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
+                clearCache(paths_telegram, downloaded_files);
+            }
+        }
+    }
+
+    public void clearCache(String[] paths_telegram, File[] downloaded_files){
+        if(checkPermission()){
+            deleteTelegramCache(paths_telegram);
+            deleteDownloadedFiles(downloaded_files);
+        }else{
+            requestPermission();
+        }
     }
 
     public void deleteTelegramCache(String[] paths){

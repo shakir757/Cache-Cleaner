@@ -86,6 +86,7 @@
         android:background="@drawable/bg_button_cleaning_cache"
         android:text="Start Clean Cache"
         android:fontFamily="@font/milliard"
+        android:onClick="onClickButtonCacheCategories"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_v_80"
