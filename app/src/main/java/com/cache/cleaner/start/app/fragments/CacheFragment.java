@@ -1,7 +1,6 @@
 package com.cache.cleaner.start.app.fragments;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -46,9 +45,7 @@ public class CacheFragment extends Fragment{
         String[] paths = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
 
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
-        TextView tvPoints = view.findViewById(R.id.text_view_balance_points); // Points of user
-        Button btnStartCleanCache = view.findViewById(R.id.button_start_clean_cache); // Start Clean Cache
-        Button btnGetPoints = view.findViewById(R.id.button_get_points); // Get start ads for user
+        Button btnStartCleanCache = view.findViewById(R.id.button_to_categories_cache); // Start Clean Cache
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_cache); // Progress bar of cache
         GifImageView gifLoad = view.findViewById(R.id.gif_load_cache); // Gif animation, enable at loading
 

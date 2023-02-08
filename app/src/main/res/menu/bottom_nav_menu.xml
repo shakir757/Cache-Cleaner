@@ -3,9 +3,14 @@
     <item
         android:id="@+id/cache"
         android:title="Clean cache"
-        android:icon="@drawable/ic_cleaning_services_24"/>
+        android:icon="@drawable/ic_hoover"/>
     <item
         android:id="@+id/battery"
         android:title="Battery"
-        android:icon="@drawable/ic_battery_charging_full"/>
+        android:icon="@drawable/ic_battery"/>
+
+    <item
+        android:id="@+id/speed"
+        android:title="Booster"
+        android:icon="@drawable/ic_speed"/>
 </menu>
