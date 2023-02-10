@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ import pl.droidsonroids.gif.GifImageView;
 public class CacheFragment extends Fragment{
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
 
+    int seconds = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cache, container, false);
@@ -62,6 +65,24 @@ public class CacheFragment extends Fragment{
 
         if(status){
 //          тут начинается прогресс бар крутиться(ШАКИР)
+            gifLoad.setVisibility(View.VISIBLE);
+            new CountDownTimer(15150, 150) {
+                public void onTick(long millisUntilFinished) {
+                    progressBar.setProgress(seconds);
+                    tvPercents.setText(seconds + "%");
+                    seconds++;
+                }
+
+                public void onFinish() {
+                    gifLoad.setVisibility(View.INVISIBLE);
+                    seconds = 0;
+                    progressBar.setProgress(0);
+                    tvPercents.setText("0 %");
+                    Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+
+                }
+            }.start();
+
             cacheStatus.set_false(); // меняем cashStatus
             //turn on advertising
             if (inter != null) {
@@ -70,7 +91,7 @@ public class CacheFragment extends Fragment{
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
             //активируем анимацию
-            gifLoad.setVisibility(View.VISIBLE);
+
             //вызываем функцию отчистки кэша
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 clearCache(paths_telegram, downloaded_files);
@@ -131,6 +152,4 @@ public class CacheFragment extends Fragment{
         }else
             ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},111);
     }
-
-
 }
