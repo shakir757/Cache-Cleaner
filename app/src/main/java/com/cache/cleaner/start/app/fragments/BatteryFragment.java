@@ -9,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +38,8 @@ public class BatteryFragment extends Fragment {
     LocationManager locationManager;
     boolean GpsStatus;
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
+    int seconds = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +63,24 @@ public class BatteryFragment extends Fragment {
         final InterstitialAd inter = adsManager.createInterstitialAd();
 
         if(status){
+            gifLoad.setVisibility(View.VISIBLE);
+
+            new CountDownTimer(15150, 150) {
+                public void onTick(long millisUntilFinished) {
+                    progressBar.setProgress(seconds);
+                    tvPercents.setText(seconds + "%");
+                    seconds++;
+                }
+
+                public void onFinish() {
+                    gifLoad.setVisibility(View.INVISIBLE);
+                    seconds = 0;
+                    progressBar.setProgress(0);
+                    tvPercents.setText("0 %");
+                    Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+
+                }
+            }.start();
 //          тут начинается прогресс бар крутиться(ШАКИР)
             cacheStatus.set_false(); // меняем cashStatus
             //turn on advertising
@@ -68,7 +90,6 @@ public class BatteryFragment extends Fragment {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
             //activating the animation
-            gifLoad.setVisibility(View.VISIBLE);
             //calling the battery saving function
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 Toast.makeText(getContext(), "rferferferferfer", Toast.LENGTH_SHORT).show();

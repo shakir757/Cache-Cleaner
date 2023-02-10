@@ -1,6 +1,7 @@
 package com.cache.cleaner.start.app.fragments;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +24,10 @@ import java.util.Objects;
 import pl.droidsonroids.gif.GifImageView;
 
 public class SpeedFragment extends Fragment {
+
+    int seconds = 0;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_speed, container, false);
@@ -41,6 +48,24 @@ public class SpeedFragment extends Fragment {
         btnSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new CountDownTimer(15150, 150) {
+                    public void onTick(long millisUntilFinished) {
+                        progressBar.setProgress(seconds);
+                        tvPercents.setText(seconds + "%");
+                        seconds++;
+                    }
+
+                    public void onFinish() {
+                        gifLoad.setVisibility(View.INVISIBLE);
+                        seconds = 0;
+                        progressBar.setProgress(0);
+                        tvPercents.setText("0 %");
+                        Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+
+                    }
+                }.start();
+
                 if (inter != null) {
                     inter.show(getActivity());
                 } else {

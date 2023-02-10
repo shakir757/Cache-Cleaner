@@ -90,7 +90,6 @@ public class CacheFragment extends Fragment{
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
-            //активируем анимацию
 
             //вызываем функцию отчистки кэша
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
