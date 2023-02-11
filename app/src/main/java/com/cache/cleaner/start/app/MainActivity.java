@@ -88,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 mInterstitialAd = null;
                             }
                         });
+
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(MainActivity.this);
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                }
 //                if (inter != null) {
 //                    inter.show(MainActivity.this);
 //                } else {
