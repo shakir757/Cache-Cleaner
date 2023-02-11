@@ -62,7 +62,6 @@ public class SpeedFragment extends Fragment {
                         progressBar.setProgress(0);
                         tvPercents.setText("0 %");
                         Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
-
                     }
                 }.start();
 

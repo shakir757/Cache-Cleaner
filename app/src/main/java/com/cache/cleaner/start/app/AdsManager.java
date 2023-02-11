@@ -32,7 +32,7 @@ public class AdsManager {
     public InterstitialAd createInterstitialAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        InterstitialAd.load(ctx,"ca-app-pub-3940256099942544/1033173712", adRequest,
+        InterstitialAd.load(ctx, String.valueOf(R.string.interstitial_ad_unit), adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -49,7 +49,6 @@ public class AdsManager {
         return mInterstitialAd;
     }
 
-
     public void createAds(AdView adview){
         AdRequest adRequest = new AdRequest.Builder().build();
         adview.setAdListener(new AdListener() {
@@ -58,7 +57,6 @@ public class AdsManager {
                 super.onAdFailedToLoad(loadAdError);
                 Log.d(TAG, loadAdError.toString());
             }
-
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
@@ -66,11 +64,5 @@ public class AdsManager {
             }
         });
         adview.loadAd(adRequest);
-
-
     }
-
-
-
-
 }

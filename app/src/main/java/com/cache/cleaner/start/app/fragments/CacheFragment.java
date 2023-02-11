@@ -63,8 +63,8 @@ public class CacheFragment extends Fragment{
         AdsManager adsManager = new AdsManager(getContext());
         final InterstitialAd inter = adsManager.createInterstitialAd();
 
+
         if(status){
-//          тут начинается прогресс бар крутиться(ШАКИР)
             gifLoad.setVisibility(View.VISIBLE);
             new CountDownTimer(15150, 150) {
                 public void onTick(long millisUntilFinished) {
@@ -82,7 +82,6 @@ public class CacheFragment extends Fragment{
 
                 }
             }.start();
-
             cacheStatus.set_false(); // меняем cashStatus
             //turn on advertising
             if (inter != null) {
@@ -90,7 +89,6 @@ public class CacheFragment extends Fragment{
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
-
             //вызываем функцию отчистки кэша
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 clearCache(paths_telegram, downloaded_files);

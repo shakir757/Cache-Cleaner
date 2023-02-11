@@ -63,8 +63,8 @@ public class BatteryFragment extends Fragment {
         final InterstitialAd inter = adsManager.createInterstitialAd();
 
         if(status){
+            //activating the animation
             gifLoad.setVisibility(View.VISIBLE);
-
             new CountDownTimer(15150, 150) {
                 public void onTick(long millisUntilFinished) {
                     progressBar.setProgress(seconds);
@@ -81,7 +81,6 @@ public class BatteryFragment extends Fragment {
 
                 }
             }.start();
-//          тут начинается прогресс бар крутиться(ШАКИР)
             cacheStatus.set_false(); // меняем cashStatus
             //turn on advertising
             if (inter != null) {
@@ -89,10 +88,8 @@ public class BatteryFragment extends Fragment {
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
             }
-            //activating the animation
             //calling the battery saving function
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
-                Toast.makeText(getContext(), "rferferferferfer", Toast.LENGTH_SHORT).show();
                 saveBattery();
             }
         }

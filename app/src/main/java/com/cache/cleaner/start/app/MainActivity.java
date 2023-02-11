@@ -1,5 +1,7 @@
 package com.cache.cleaner.start.app;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +17,14 @@ import com.cache.cleaner.start.app.fragments.BatteryFragment;
 import com.cache.cleaner.start.app.fragments.CacheCategoriesFragment;
 import com.cache.cleaner.start.app.fragments.CacheFragment;
 import com.cache.cleaner.start.app.fragments.SpeedFragment;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -28,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Button get_points_btn;
     TextView tvPoints;
     AdView adview;
+
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +45,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
 
 
-        MobileAds.initialize(MainActivity.this, new OnInitializationCompleteListener() {
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+
         // google ads banner
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
 
         // google ads Interstitial
-        final InterstitialAd inter = adsManager.createInterstitialAd();
+//        final InterstitialAd inter = adsManager.createInterstitialAd();
 
         // initializing elements
         tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
@@ -61,11 +71,28 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         get_points_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inter != null) {
-                    inter.show(MainActivity.this);
-                } else {
-                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                }
+                InterstitialAd.load(MainActivity.this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                        new InterstitialAdLoadCallback() {
+                            @Override
+                            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                                // The mInterstitialAd reference will be null until
+                                // an ad is loaded.
+                                mInterstitialAd = interstitialAd;
+                                Log.i(TAG, "onAdLoaded");
+                            }
+
+                            @Override
+                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                                // Handle the error
+                                Log.d(TAG, loadAdError.toString());
+                                mInterstitialAd = null;
+                            }
+                        });
+//                if (inter != null) {
+//                    inter.show(MainActivity.this);
+//                } else {
+//                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+//                }
             }
         });
     }
