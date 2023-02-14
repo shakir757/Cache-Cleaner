@@ -19,6 +19,7 @@ import com.cache.cleaner.start.app.fragments.CacheFragment;
 import com.cache.cleaner.start.app.fragments.SpeedFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Button get_points_btn;
     TextView tvPoints;
     AdView adview;
-
+    AdRequest adRequest;
     private InterstitialAd mInterstitialAd;
 
     @Override
@@ -44,14 +45,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
 
-
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
-        AdRequest adRequest = new AdRequest.Builder().build();
 
+        loadInterstitial();
 
         // google ads banner
         adview = findViewById(R.id.adView);
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         adsManager.createAds(adview);
 
         // google ads Interstitial
-//        final InterstitialAd inter = adsManager.createInterstitialAd();
 
         // initializing elements
         tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
@@ -71,34 +69,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         get_points_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InterstitialAd.load(MainActivity.this,"ca-app-pub-3940256099942544/1033173712", adRequest,
-                        new InterstitialAdLoadCallback() {
-                            @Override
-                            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                                // The mInterstitialAd reference will be null until
-                                // an ad is loaded.
-                                mInterstitialAd = interstitialAd;
-                                Log.i(TAG, "onAdLoaded");
-                            }
-
-                            @Override
-                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                // Handle the error
-                                Log.d(TAG, loadAdError.toString());
-                                mInterstitialAd = null;
-                            }
-                        });
 
                 if (mInterstitialAd != null) {
+                    view.setClickable(false);
                     mInterstitialAd.show(MainActivity.this);
+                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            super.onAdDismissedFullScreenContent();
+                            loadInterstitial();
+                        }
+                    });
+                    view.setClickable(true);
+
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 }
-//                if (inter != null) {
-//                    inter.show(MainActivity.this);
-//                } else {
-//                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
-//                }
+
             }
         });
     }
@@ -108,6 +95,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SpeedFragment speedFragment = new SpeedFragment();
     BatteryCategoriesFragment batteryCategoriesFragment = new BatteryCategoriesFragment();
     CacheCategoriesFragment cacheCategoriesFragment = new CacheCategoriesFragment();
+
+
+    private void loadInterstitial() {
+        InterstitialAd.load(this, String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.d(TAG, loadAdError.toString());
+                        mInterstitialAd = null;
+                    }
+        });
+    }
+
 
     public void onClickButtonCacheCategories(View view){
         set_Visibility(false);
