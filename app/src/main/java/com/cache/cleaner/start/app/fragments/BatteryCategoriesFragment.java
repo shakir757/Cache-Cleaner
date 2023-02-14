@@ -37,7 +37,7 @@ public class BatteryCategoriesFragment extends Fragment {
             public void onClick(View view) {
                 cacheStatus.set_true();
                 cacheStatus.set_function("SAVE");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                ((MainActivity)getActivity()).onClickButtonBattery(view);
             }
         });
         btnExtendBattery.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +45,7 @@ public class BatteryCategoriesFragment extends Fragment {
             public void onClick(View view) {
                 cacheStatus.set_true();
                 cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                ((MainActivity)getActivity()).onClickButtonBattery(view);
             }
         });
         btnBatteryOptimization.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class BatteryCategoriesFragment extends Fragment {
             public void onClick(View view) {
                 cacheStatus.set_true();
                 cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                ((MainActivity)getActivity()).onClickButtonBattery(view);
             }
         });
     }
