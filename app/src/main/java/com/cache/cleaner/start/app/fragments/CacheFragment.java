@@ -1,5 +1,7 @@
 package com.cache.cleaner.start.app.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -25,7 +27,14 @@ import com.cache.cleaner.start.app.AdsManager;
 import com.cache.cleaner.start.app.CacheStatus;
 import com.cache.cleaner.start.app.MainActivity;
 import com.cache.cleaner.start.app.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,8 +45,11 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class CacheFragment extends Fragment{
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
+    AdsManager adsManager;
+    private InterstitialAd mInterstitialAd;
 
     int seconds = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,8 +60,14 @@ public class CacheFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] paths_telegram = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        adsManager = new AdsManager(getContext());
+        loadInterstitial();
 
+        String[] paths_telegram = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
         Button btnStartCleanCache = view.findViewById(R.id.button_to_categories_cache); // Start Clean Cache
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_cache); // Progress bar of cache
@@ -60,9 +78,6 @@ public class CacheFragment extends Fragment{
         File[] downloaded_files = root.listFiles();
         Boolean status = cacheStatus.get_cache_status();
         //enabling advertising
-        AdsManager adsManager = new AdsManager(getContext());
-        final InterstitialAd inter = adsManager.createInterstitialAd();
-
 
         if(status){
             gifLoad.setVisibility(View.VISIBLE);
@@ -82,18 +97,42 @@ public class CacheFragment extends Fragment{
 
                 }
             }.start();
-            cacheStatus.set_false(); // меняем cashStatus
-            //turn on advertising
-            if (inter != null) {
-                inter.show(getActivity());
+            cacheStatus.set_false();
+
+            if (mInterstitialAd != null) {
+                mInterstitialAd.show(getActivity());
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        loadInterstitial();
+                    }
+                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                loadInterstitial();
             }
-            //вызываем функцию отчистки кэша
+
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 clearCache(paths_telegram, downloaded_files);
             }
         }
+    }
+
+    private void loadInterstitial() {
+        InterstitialAd.load(getContext(), String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.d(TAG, loadAdError.toString());
+                        mInterstitialAd = null;
+                    }
+                });
     }
 
     public void clearCache(String[] paths_telegram, File[] downloaded_files){

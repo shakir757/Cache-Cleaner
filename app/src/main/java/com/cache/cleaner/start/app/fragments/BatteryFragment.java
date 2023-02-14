@@ -1,5 +1,7 @@
 package com.cache.cleaner.start.app.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -25,7 +27,14 @@ import android.widget.Toast;
 import com.cache.cleaner.start.app.AdsManager;
 import com.cache.cleaner.start.app.CacheStatus;
 import com.cache.cleaner.start.app.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.Objects;
 
@@ -39,6 +48,9 @@ public class BatteryFragment extends Fragment {
     boolean GpsStatus;
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
     int seconds = 0;
+    AdsManager adsManager;
+    private InterstitialAd mInterstitialAd;
+
 
 
     @Override
@@ -50,6 +62,13 @@ public class BatteryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        adsManager = new AdsManager(getContext());
+        loadInterstitial();
+
         Button btnBattery = view.findViewById(R.id.button_battery);
         TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
         ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_battery); // Progress bar of cache
@@ -58,9 +77,6 @@ public class BatteryFragment extends Fragment {
         brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
 
         Boolean status = cacheStatus.get_cache_status();
-
-        AdsManager adsManager = new AdsManager(getContext());
-        final InterstitialAd inter = adsManager.createInterstitialAd();
 
         if(status){
             //activating the animation
@@ -83,22 +99,47 @@ public class BatteryFragment extends Fragment {
             }.start();
             cacheStatus.set_false(); // меняем cashStatus
             //turn on advertising
-            if (inter != null) {
-                inter.show(getActivity());
+            if (mInterstitialAd != null) {
+                mInterstitialAd.show(getActivity());
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        loadInterstitial();
+                    }
+                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                loadInterstitial();
             }
             //calling the battery saving function
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 saveBattery();
             }
         }
+
     }
 
     public void saveBattery() {
         light();
         disableBT();
         turnGPSOff();
+    }
+
+    private void loadInterstitial() {
+        InterstitialAd.load(getContext(), String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.d(TAG, loadAdError.toString());
+                        mInterstitialAd = null;
+                    }
+                });
     }
 
     public void light(){
