@@ -4,6 +4,9 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     AdRequest adRequest;
     private InterstitialAd mInterstitialAd;
 
+    private int points = 0;
+    SharedPreferences mSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
+
+        mSettings = getSharedPreferences("points", Context.MODE_PRIVATE);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
