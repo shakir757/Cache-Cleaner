@@ -107,6 +107,13 @@ public class CacheFragment extends Fragment{
 
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        loadInterstitial();
+                    }
+                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 loadInterstitial();

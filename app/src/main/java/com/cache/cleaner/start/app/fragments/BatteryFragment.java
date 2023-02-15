@@ -100,6 +100,13 @@ public class BatteryFragment extends Fragment {
             cacheStatus.set_false();
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        loadInterstitial();
+                    }
+                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 loadInterstitial();
