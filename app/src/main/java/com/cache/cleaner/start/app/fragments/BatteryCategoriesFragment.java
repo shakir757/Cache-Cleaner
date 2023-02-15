@@ -1,5 +1,7 @@
 package com.cache.cleaner.start.app.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,8 @@ public class BatteryCategoriesFragment extends Fragment {
 
     final CacheStatus cacheStatus = CacheStatus.getInstance();
 
+    SharedPreferences mSettings;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_battery_categories, container, false);
@@ -31,6 +35,8 @@ public class BatteryCategoriesFragment extends Fragment {
         Button btnExtendBattery = view.findViewById(R.id.button_extend_battery);
         Button btnBatteryOptimization = view.findViewById(R.id.button_battery_optimization);
         ImageView goBack = view.findViewById(R.id.button_back_to_battery);
+
+        mSettings = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
 
         btnPowerSaving.setOnClickListener(new View.OnClickListener() {
             @Override
