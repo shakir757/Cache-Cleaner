@@ -63,7 +63,8 @@ public class SpeedFragment extends Fragment {
         btnSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                view.setClickable(false);
+                btnSpeed.setClickable(false);
+                gifLoad.setVisibility(View.VISIBLE);
                 new CountDownTimer(15150, 150) {
                     public void onTick(long millisUntilFinished) {
                         progressBar.setProgress(seconds);
@@ -77,6 +78,8 @@ public class SpeedFragment extends Fragment {
                         progressBar.setProgress(0);
                         tvPercents.setText("0 %");
                         Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+
+                        btnSpeed.setClickable(true);
                     }
                 }.start();
 
@@ -93,8 +96,6 @@ public class SpeedFragment extends Fragment {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                     loadInterstitial();
                 }
-                gifLoad.setVisibility(View.VISIBLE);
-                view.setClickable(true);
             }
         });
     }
