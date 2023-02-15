@@ -52,9 +52,17 @@ public class BatteryFragment extends Fragment {
     private InterstitialAd mInterstitialAd;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+
+        adsManager = new AdsManager(getContext());
+        loadInterstitial();
+
         return inflater.inflate(R.layout.fragment_battery, container, false);
     }
 
@@ -62,12 +70,12 @@ public class BatteryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
-        adsManager = new AdsManager(getContext());
-        loadInterstitial();
+//        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+//        });
+//        adsManager = new AdsManager(getContext());
+//        loadInterstitial();
 
         Button btnBattery = view.findViewById(R.id.button_battery);
         TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
@@ -101,14 +109,15 @@ public class BatteryFragment extends Fragment {
             //turn on advertising
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        loadInterstitial();
-                    }
-                });
+//                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+//                    @Override
+//                    public void onAdDismissedFullScreenContent() {
+//                        super.onAdDismissedFullScreenContent();
+//                        loadInterstitial();
+//                    }
+//                });
             } else {
+                Toast.makeText(getContext(), "tutututu", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 loadInterstitial();
             }
@@ -133,10 +142,10 @@ public class BatteryFragment extends Fragment {
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         mInterstitialAd = interstitialAd;
                     }
-
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.d(TAG, loadAdError.toString());
+                        Log.d("error_load", loadAdError.toString());
+                        Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
                 });
