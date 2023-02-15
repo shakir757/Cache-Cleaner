@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void onClick(View view) {
 
                 if (mInterstitialAd != null) {
-                    view.setClickable(false);
+                    get_points_btn.setClickable(false);
                     mInterstitialAd.show(MainActivity.this);
                     mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             loadInterstitial();
                         }
                     });
-                    view.setClickable(true);
+                    get_points_btn.setClickable(true);
 
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
