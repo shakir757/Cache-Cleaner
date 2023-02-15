@@ -61,15 +61,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadInterstitial();
         loadAndShowInterstitialStart();
 
-        // google ads banner
+
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
 
-        // google ads Interstitial
-
-        // initializing elements
-        tvPoints = findViewById(R.id.text_view_balance_points); // Points of user
+        tvPoints = findViewById(R.id.text_view_balance_points);
         get_points_btn = findViewById(R.id.button_get_points);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);

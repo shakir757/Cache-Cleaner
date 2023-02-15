@@ -106,7 +106,7 @@ public class BatteryFragment extends Fragment {
                 loadInterstitial();
             }
             //calling the battery saving function
-            if (Objects.equals(cacheStatus.get_function(), "SAVE")) {
+            if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 saveBattery();
             }
         }
