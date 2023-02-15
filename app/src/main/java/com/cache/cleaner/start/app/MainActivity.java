@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
 
-        mSettings = getSharedPreferences("points", Context.MODE_PRIVATE);
+        mSettings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -74,9 +74,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.cache);
 
+        points = mSettings.getInt("points", 0);
+        tvPoints.setText("Balance: " + points + " points");
+
         get_points_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                points += 10;
+                SharedPreferences.Editor editor = mSettings.edit();
+                editor.putInt("points", points);
+                editor.apply();
+
+                tvPoints.setText("Balance: " + points + " points");
 
                 if (mInterstitialAd != null) {
                     get_points_btn.setClickable(false);

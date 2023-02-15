@@ -2,6 +2,8 @@ package com.cache.cleaner.start.app.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -36,6 +38,7 @@ public class SpeedFragment extends Fragment {
     AdsManager adsManager;
     private InterstitialAd mInterstitialAd;
 
+    SharedPreferences mSettings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class SpeedFragment extends Fragment {
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
         adsManager = new AdsManager(getContext());
+        mSettings = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         loadInterstitial();
 
         Button btnSpeed = view.findViewById(R.id.button_speed);
@@ -63,45 +67,57 @@ public class SpeedFragment extends Fragment {
         btnSpeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnSpeed.setClickable(false);
-                gifLoad.setVisibility(View.VISIBLE);
-                new CountDownTimer(15150, 150) {
-                    public void onTick(long millisUntilFinished) {
-                        progressBar.setProgress(seconds);
-                        tvPercents.setText(seconds + "%");
-                        seconds++;
-                    }
+                int points = 0;
+                points = mSettings.getInt("points", 0);
 
-                    public void onFinish() {
-                        gifLoad.setVisibility(View.INVISIBLE);
-                        seconds = 0;
-                        progressBar.setProgress(0);
-                        tvPercents.setText("0 %");
-                        Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+                if (points < 10){
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
 
-                        btnSpeed.setClickable(true);
-                    }
-                }.start();
-
-                if (mInterstitialAd != null) {
-                    mInterstitialAd.show(getActivity());
-                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
-                            super.onAdDismissedFullScreenContent();
-                            loadInterstitial();
+                    btnSpeed.setClickable(false);
+                    gifLoad.setVisibility(View.VISIBLE);
+                    new CountDownTimer(15150, 150) {
+                        public void onTick(long millisUntilFinished) {
+                            progressBar.setProgress(seconds);
+                            tvPercents.setText(seconds + "%");
+                            seconds++;
                         }
-                    });
+
+                        public void onFinish() {
+                            gifLoad.setVisibility(View.INVISIBLE);
+                            seconds = 0;
+                            progressBar.setProgress(0);
+                            tvPercents.setText("0 %");
+                            Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
+
+                            btnSpeed.setClickable(true);
+                        }
+                    }.start();
+
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd.show(getActivity());
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                loadInterstitial();
+                            }
+                        });
+                    } else {
+                        Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                        loadInterstitial();
+                    }
                 } else {
-                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                    loadInterstitial();
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void loadInterstitial() {
-        InterstitialAd.load(getContext(), String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
