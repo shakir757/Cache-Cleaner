@@ -49,7 +49,7 @@ public class BatteryFragment extends Fragment {
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
     int seconds = 0;
     AdsManager adsManager;
-    private InterstitialAd mInterstitialAd;
+    InterstitialAd mInterstitialAd;
 
 
     @Override
@@ -62,20 +62,12 @@ public class BatteryFragment extends Fragment {
 
         adsManager = new AdsManager(getContext());
         loadInterstitial();
-
         return inflater.inflate(R.layout.fragment_battery, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-//            @Override
-//            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-//        });
-//        adsManager = new AdsManager(getContext());
-//        loadInterstitial();
 
         Button btnBattery = view.findViewById(R.id.button_battery);
         TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
@@ -109,15 +101,7 @@ public class BatteryFragment extends Fragment {
             //turn on advertising
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
-//                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-//                    @Override
-//                    public void onAdDismissedFullScreenContent() {
-//                        super.onAdDismissedFullScreenContent();
-//                        loadInterstitial();
-//                    }
-//                });
             } else {
-                Toast.makeText(getContext(), "tutututu", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 loadInterstitial();
             }
@@ -136,7 +120,7 @@ public class BatteryFragment extends Fragment {
     }
 
     private void loadInterstitial() {
-        InterstitialAd.load(getContext(), String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -145,7 +129,7 @@ public class BatteryFragment extends Fragment {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.d("error_load", loadAdError.toString());
-                        Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error battery", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
                 });

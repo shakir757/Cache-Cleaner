@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView tvPoints;
     AdView adview;
     AdRequest adRequest;
-    private InterstitialAd mInterstitialAd;
+    InterstitialAd mInterstitialAd;
 
     private int points = 0;
     SharedPreferences mSettings;
@@ -106,16 +106,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     private void loadInterstitial() {
-        InterstitialAd.load(this, String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         mInterstitialAd = interstitialAd;
                     }
-
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.d(TAG, loadAdError.toString());
+                        Log.d("load_err", loadAdError.toString());
+                        Toast.makeText(MainActivity.this, "Error getPoints!", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
         });

@@ -46,7 +46,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class CacheFragment extends Fragment{
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
     AdsManager adsManager;
-    private InterstitialAd mInterstitialAd;
+    InterstitialAd mInterstitialAd;
     int seconds = 0;
 
 
@@ -108,17 +108,8 @@ public class CacheFragment extends Fragment{
 
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
-//                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-//                    @Override
-//                    public void onAdDismissedFullScreenContent() {
-//                        super.onAdDismissedFullScreenContent();
-//                        loadInterstitial();
-//                    }
-//                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                Toast.makeText(getContext(), "tutututututtuu!", Toast.LENGTH_SHORT).show();
-
                 loadInterstitial();
             }
 
@@ -129,7 +120,7 @@ public class CacheFragment extends Fragment{
     }
 
     private void loadInterstitial() {
-        InterstitialAd.load(getContext(), String.valueOf(R.string.interstitial_ad_unit), new AdRequest.Builder().build(),
+        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -139,7 +130,7 @@ public class CacheFragment extends Fragment{
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
-                        Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error cache!", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
                 });

@@ -4,5 +4,4 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_settings">Settings</string>
     <string name="clean_file_size_suffix">%1$s%2$s</string>
-    <string name="interstitial_ad_unit">ca-app-pub-3940256099942544/1033173712</string>
 </resources>
