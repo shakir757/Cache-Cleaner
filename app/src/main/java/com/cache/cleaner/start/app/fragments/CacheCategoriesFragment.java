@@ -1,6 +1,8 @@
 package com.cache.cleaner.start.app.fragments;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -31,6 +33,8 @@ public class CacheCategoriesFragment extends Fragment {
 
     final CacheStatus cacheStatus = CacheStatus.getInstance();
 
+    SharedPreferences mSettings;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_cache_categories, container, false);
@@ -45,6 +49,8 @@ public class CacheCategoriesFragment extends Fragment {
         Button btnCleanHiddenFiles = view.findViewById(R.id.button_clean_hidden_files);
         ImageView goBack = view.findViewById(R.id.button_back_to_cache);
 
+        mSettings = getActivity().getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+
         String[] paths = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
         String path = Environment.getExternalStorageDirectory().getPath()+"/Download";
         File root = new File(path);
@@ -53,25 +59,67 @@ public class CacheCategoriesFragment extends Fragment {
         btnCleanCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("CLEAR");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("CLEAR");
+                    ((MainActivity)getActivity()).onClickButtonCache(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCleanFiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("NONE");
+                    ((MainActivity)getActivity()).onClickButtonCache(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCleanHiddenFiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonCache(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("NONE");
+                    ((MainActivity)getActivity()).onClickButtonCache(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

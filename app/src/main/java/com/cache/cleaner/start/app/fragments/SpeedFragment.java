@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cache.cleaner.start.app.AdsManager;
+import com.cache.cleaner.start.app.MainActivity;
 import com.cache.cleaner.start.app.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -70,11 +71,13 @@ public class SpeedFragment extends Fragment {
                 int points = 0;
                 points = mSettings.getInt("points", 0);
 
-                if (points < 10){
+                if (points >= 10){
                     points -= 10;
                     SharedPreferences.Editor editor = mSettings.edit();
                     editor.putInt("points", points);
                     editor.apply();
+
+                    ((MainActivity)getActivity()).refreshPoints();
 
                     btnSpeed.setClickable(false);
                     gifLoad.setVisibility(View.VISIBLE);

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
 
         loadInterstitial();
+        loadAndShowInterstitialStart();
 
         // google ads banner
         adview = findViewById(R.id.adView);
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onClick(View view) {
 
+                points = mSettings.getInt("points", 0);
                 points += 10;
                 SharedPreferences.Editor editor = mSettings.edit();
                 editor.putInt("points", points);
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 tvPoints.setText("Balance: " + points + " points");
 
                 if (mInterstitialAd != null) {
-                    get_points_btn.setClickable(false);
                     mInterstitialAd.show(MainActivity.this);
                     mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             loadInterstitial();
                         }
                     });
-                    get_points_btn.setClickable(true);
 
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
@@ -129,6 +129,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         mInterstitialAd = null;
                     }
         });
+    }
+
+    private void loadAndShowInterstitialStart() {
+        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        interstitialAd.show(MainActivity.this);
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                loadInterstitial();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Log.d("load_err", loadAdError.toString());
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        mInterstitialAd = null;
+                    }
+                });
     }
 
 
@@ -182,4 +205,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onBackPressed() {}
+
+    public void refreshPoints(){
+        tvPoints.setText("Balance: " + mSettings.getInt("points", 0) + " points");
+    }
 }

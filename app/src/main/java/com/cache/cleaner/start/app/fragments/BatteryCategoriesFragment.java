@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -41,25 +43,67 @@ public class BatteryCategoriesFragment extends Fragment {
         btnPowerSaving.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("SAVE");
-                ((MainActivity)getActivity()).onClickButtonBattery(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("SAVE");
+                    ((MainActivity)getActivity()).onClickButtonBattery(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnExtendBattery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonBattery(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("NONE");
+                    ((MainActivity)getActivity()).onClickButtonBattery(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnBatteryOptimization.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cacheStatus.set_true();
-                cacheStatus.set_function("NONE");
-                ((MainActivity)getActivity()).onClickButtonBattery(view);
+                int points = 0;
+                points = mSettings.getInt("points", 0);
+
+                if (points >= 10) {
+                    points -= 10;
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putInt("points", points);
+                    editor.apply();
+
+                    ((MainActivity) getActivity()).refreshPoints();
+
+                    cacheStatus.set_true();
+                    cacheStatus.set_function("NONE");
+                    ((MainActivity)getActivity()).onClickButtonBattery(view);
+                } else {
+                    Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
