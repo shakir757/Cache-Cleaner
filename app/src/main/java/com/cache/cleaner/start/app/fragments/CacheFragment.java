@@ -47,18 +47,11 @@ public class CacheFragment extends Fragment{
     final CacheStatus cacheStatus =  CacheStatus.getInstance();
     AdsManager adsManager;
     private InterstitialAd mInterstitialAd;
-
     int seconds = 0;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cache, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
             @Override
@@ -66,6 +59,20 @@ public class CacheFragment extends Fragment{
         });
         adsManager = new AdsManager(getContext());
         loadInterstitial();
+
+        return inflater.inflate(R.layout.fragment_cache, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+//        });
+//        adsManager = new AdsManager(getContext());
+//        loadInterstitial();
 
         String[] paths_telegram = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
@@ -101,15 +108,17 @@ public class CacheFragment extends Fragment{
 
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        super.onAdDismissedFullScreenContent();
-                        loadInterstitial();
-                    }
-                });
+//                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+//                    @Override
+//                    public void onAdDismissedFullScreenContent() {
+//                        super.onAdDismissedFullScreenContent();
+//                        loadInterstitial();
+//                    }
+//                });
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                Toast.makeText(getContext(), "tutututututtuu!", Toast.LENGTH_SHORT).show();
+
                 loadInterstitial();
             }
 
@@ -130,6 +139,7 @@ public class CacheFragment extends Fragment{
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
+                        Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
                 });
