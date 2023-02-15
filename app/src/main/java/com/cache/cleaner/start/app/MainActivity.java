@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         loadInterstitial();
         loadAndShowInterstitialStart();
 
-
         adview = findViewById(R.id.adView);
         AdsManager adsManager = new AdsManager(this);
         adsManager.createAds(adview);
