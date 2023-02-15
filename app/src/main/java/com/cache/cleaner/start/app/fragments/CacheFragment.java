@@ -101,7 +101,6 @@ public class CacheFragment extends Fragment{
                     progressBar.setProgress(0);
                     tvPercents.setText("0 %");
                     Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
-
                 }
             }.start();
             cacheStatus.set_false();
@@ -126,7 +125,6 @@ public class CacheFragment extends Fragment{
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                         mInterstitialAd = interstitialAd;
                     }
-
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());

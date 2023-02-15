@@ -70,9 +70,9 @@ public class BatteryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button btnBattery = view.findViewById(R.id.button_battery);
-        TextView tvPercents = view.findViewById(R.id.text_view_percents_battery); // Percents loading
-        ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_battery); // Progress bar of cache
-        GifImageView gifLoad = view.findViewById(R.id.gif_load_battery); // Gif animation, enable at loading
+        TextView tvPercents = view.findViewById(R.id.text_view_percents_battery);
+        ProgressBar progressBar = view.findViewById(R.id.progress_circular_bar_battery);
+        GifImageView gifLoad = view.findViewById(R.id.gif_load_battery);
         gifLoad.setVisibility(View.INVISIBLE);
         brightness = Settings.System.getInt(getContext().getContentResolver(),Settings.System.SCREEN_BRIGHTNESS,0);
 
@@ -97,15 +97,13 @@ public class BatteryFragment extends Fragment {
 
                 }
             }.start();
-            cacheStatus.set_false(); // меняем cashStatus
-            //turn on advertising
+            cacheStatus.set_false();
             if (mInterstitialAd != null) {
                 mInterstitialAd.show(getActivity());
             } else {
                 Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 loadInterstitial();
             }
-            //calling the battery saving function
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 saveBattery();
             }
