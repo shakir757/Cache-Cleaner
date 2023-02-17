@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
     private void loadInterstitial() {
-        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
+        InterstitialAd.load(this, "ca-app-pub-8657317529631499/1700655940", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void loadAndShowInterstitialStart() {
-        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
+        InterstitialAd.load(this, "ca-app-pub-8657317529631499/1700655940", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {

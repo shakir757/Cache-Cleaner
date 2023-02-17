@@ -120,7 +120,7 @@ public class SpeedFragment extends Fragment {
     }
 
     private void loadInterstitial() {
-        InterstitialAd.load(getContext(), "ca-app-pub-3940256099942544/1033173712", new AdRequest.Builder().build(),
+        InterstitialAd.load(getContext(), "ca-app-pub-8657317529631499/1700655940", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
