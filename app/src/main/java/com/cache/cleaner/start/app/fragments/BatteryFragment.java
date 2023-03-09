@@ -1,23 +1,35 @@
 package com.cache.cleaner.start.app.fragments;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.BATTERY_SERVICE;
+import static android.content.Context.POWER_SERVICE;
+
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -109,14 +121,45 @@ public class BatteryFragment extends Fragment {
             if (Objects.equals(cacheStatus.get_function(), "SAVE")) {
                 saveBattery();
             }
+            if (Objects.equals(cacheStatus.get_function(), "SAVETWENTYPERCENT")) {
+                saveTwentyPercent();
+            }
+            if (Objects.equals(cacheStatus.get_function(), "OPTIMIZATIONBATTERY")) {
+                optimizationBattry();
+            }
         }
 
+    }
+
+    public void saveTwentyPercent(){
+        disableBT();
+        exta_save();
+    }
+
+    public void optimizationBattry(){
+        reducingUsage();
+        turnGPSOff();
     }
 
     public void saveBattery() {
         light();
         disableBT();
         turnGPSOff();
+    }
+
+    public void reducingUsage(){
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        Vibrator vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.cancel();
+        Settings.System.putInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        Settings.System.putInt(getContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 50); // 50% brightness
+
+    }
+
+    public void exta_save(){
+        Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.ANIMATOR_DURATION_SCALE, 0);
+        Settings.Global.putInt(getContext().getContentResolver(), Settings.Global.TRANSITION_ANIMATION_SCALE, 0);
     }
 
     private void loadInterstitial() {

@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         Toast.makeText(MainActivity.this, "Error getPoints!", Toast.LENGTH_SHORT).show();
                         mInterstitialAd = null;
                     }
-        });
+                });
     }
 
     private void loadAndShowInterstitialStart() {
@@ -166,10 +166,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         set_Visibility(true);
     }
 
+    public void onClickButtonCacheFiles(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheFragment).commit();
+        set_Visibility(true);
+    }
+
+    public void onClickButtonCacheHiddenFiles(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, cacheFragment).commit();
+        set_Visibility(true);
+    }
+
     public void onClickButtonBattery(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
         set_Visibility(true);
+    }
 
+    public void onClickButtonBatteryTwentyMinutes(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
+        set_Visibility(true);
+    }
+
+    public void onClickButtonBatteryOptimization(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, batteryFragment).commit();
+        set_Visibility(true);
     }
 
     public void set_Visibility(Boolean mode){

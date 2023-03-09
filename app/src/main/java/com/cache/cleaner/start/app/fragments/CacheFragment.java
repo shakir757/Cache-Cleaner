@@ -67,13 +67,6 @@ public class CacheFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-//            @Override
-//            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-//        });
-//        adsManager = new AdsManager(getContext());
-//        loadInterstitial();
-
         String[] paths_telegram = {Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Images", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Video", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram File", Environment.getExternalStorageDirectory().getPath()+"/Telegram/Telegram Documents"};
         TextView tvPercents = view.findViewById(R.id.text_view_percents); // Percents loading
         Button btnStartCleanCache = view.findViewById(R.id.button_to_categories_cache); // Start Clean Cache
@@ -94,7 +87,6 @@ public class CacheFragment extends Fragment{
                     tvPercents.setText(seconds + "%");
                     seconds++;
                 }
-
                 public void onFinish() {
                     gifLoad.setVisibility(View.INVISIBLE);
                     seconds = 0;
@@ -122,6 +114,12 @@ public class CacheFragment extends Fragment{
             if (Objects.equals(cacheStatus.get_function(), "CLEAR")) {
                 clearCache(paths_telegram, downloaded_files);
             }
+            if (Objects.equals(cacheStatus.get_function(), "CACHEFILES")) {
+//                clearCacheFiles(paths_telegram, downloaded_files);
+            }
+            if (Objects.equals(cacheStatus.get_function(), "CACHEHIDDENFILES")) {
+//                clearCacheHiddenFiles(paths_telegram, downloaded_files);
+            }
         }
     }
 
@@ -147,6 +145,43 @@ public class CacheFragment extends Fragment{
             deleteDownloadedFiles(downloaded_files);
         }else{
             requestPermission();
+        }
+    }
+
+    public void clearCacheFiles(String[] paths_telegram, File[] downloaded_files){
+        if(checkPermission()){
+            deleteTelegramCache(paths_telegram);
+        }else{
+            requestPermission();
+        }
+    }
+
+    public void clearCacheHiddenFiles(String[] paths_telegram, File[] downloaded_files){
+        if(checkPermission()){
+            removeHiddenFilesFromExternalStorage();
+        }else{
+            requestPermission();
+        }
+    }
+
+    public static void removeHiddenFilesFromExternalStorage() {
+        File externalStorageDir = Environment.getExternalStorageDirectory();
+
+        if (externalStorageDir != null && externalStorageDir.exists() && externalStorageDir.isDirectory()) {
+            File[] files = externalStorageDir.listFiles();
+
+            for (File file : files) {
+                if (file.isHidden() && file.isFile()) {
+                    boolean isDeleted = file.delete();
+                    if (isDeleted) {
+                        System.out.println("File deleted successfully: " + file.getName());
+                    } else {
+                        System.out.println("Failed to delete file: " + file.getName());
+                    }
+                }
+            }
+        } else {
+            System.out.println("External storage directory does not exist or is not a directory");
         }
     }
 

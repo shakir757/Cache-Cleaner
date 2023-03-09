@@ -1,11 +1,18 @@
 package com.cache.cleaner.start.app.fragments;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.ACTIVITY_SERVICE;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.TrafficStats;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +37,8 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -70,15 +79,12 @@ public class SpeedFragment extends Fragment {
             public void onClick(View v) {
                 int points = 0;
                 points = mSettings.getInt("points", 0);
-
                 if (points >= 10){
                     points -= 10;
                     SharedPreferences.Editor editor = mSettings.edit();
                     editor.putInt("points", points);
                     editor.apply();
-
                     ((MainActivity)getActivity()).refreshPoints();
-
                     btnSpeed.setClickable(false);
                     gifLoad.setVisibility(View.VISIBLE);
                     new CountDownTimer(15150, 150) {
@@ -87,18 +93,16 @@ public class SpeedFragment extends Fragment {
                             tvPercents.setText(seconds + "%");
                             seconds++;
                         }
-
                         public void onFinish() {
                             gifLoad.setVisibility(View.INVISIBLE);
                             seconds = 0;
                             progressBar.setProgress(0);
                             tvPercents.setText("0 %");
                             Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
-
                             btnSpeed.setClickable(true);
                         }
                     }.start();
-
+                    boost();
                     if (mInterstitialAd != null) {
                         mInterstitialAd.show(getActivity());
                         mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -119,6 +123,46 @@ public class SpeedFragment extends Fragment {
         });
     }
 
+    public void boost(){
+        optimizeBackgroundProcesses();
+        optimizeMemoryUsage();
+        optimizeResourceUsage();
+    }
+
+
+    public void optimizeResourceUsage() {
+        TrafficStats.setThreadStatsTag(0xF00D);
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        ActivityManager activityManager = (ActivityManager) getContext().getSystemService(ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            activityManager.getMemoryInfo(mi);
+            if (mi.lowMemory) {
+                Log.d(TAG, "Low memory detected!");
+            }
+        }
+    }
+
+
+    public void optimizeMemoryUsage() {
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+    }
+
+    public void optimizeBackgroundProcesses() {
+        ActivityManager am = (ActivityManager) getContext().getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo processInfo : runningAppProcesses) {
+            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                am.killBackgroundProcesses(processInfo.processName);
+            }
+        }
+    }
+
     private void loadInterstitial() {
         InterstitialAd.load(getContext(), "ca-app-pub-8657317529631499/1700655940", new AdRequest.Builder().build(),
                 new InterstitialAdLoadCallback() {
@@ -132,7 +176,7 @@ public class SpeedFragment extends Fragment {
                         Log.d(TAG, loadAdError.toString());
                         mInterstitialAd = null;
                     }
-                });
+        });
     }
 }
 

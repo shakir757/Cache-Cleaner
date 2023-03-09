@@ -77,8 +77,8 @@ public class BatteryCategoriesFragment extends Fragment {
                     ((MainActivity) getActivity()).refreshPoints();
 
                     cacheStatus.set_true();
-                    cacheStatus.set_function("NONE");
-                    ((MainActivity)getActivity()).onClickButtonBattery(view);
+                    cacheStatus.set_function("SAVETWENTYPERCENT");
+                    ((MainActivity)getActivity()).onClickButtonBatteryTwentyMinutes(view);
                 } else {
                     Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
                 }
@@ -99,8 +99,8 @@ public class BatteryCategoriesFragment extends Fragment {
                     ((MainActivity) getActivity()).refreshPoints();
 
                     cacheStatus.set_true();
-                    cacheStatus.set_function("NONE");
-                    ((MainActivity)getActivity()).onClickButtonBattery(view);
+                    cacheStatus.set_function("OPTIMIZATIONBATTERY");
+                    ((MainActivity)getActivity()).onClickButtonBatteryOptimization(view);
                 } else {
                     Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
                 }

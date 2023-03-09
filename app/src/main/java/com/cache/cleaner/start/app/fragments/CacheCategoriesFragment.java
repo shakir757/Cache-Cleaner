@@ -93,8 +93,8 @@ public class CacheCategoriesFragment extends Fragment {
                     ((MainActivity) getActivity()).refreshPoints();
 
                     cacheStatus.set_true();
-                    cacheStatus.set_function("NONE");
-                    ((MainActivity)getActivity()).onClickButtonCache(view);
+                    cacheStatus.set_function("CACHEFILES");
+                    ((MainActivity)getActivity()).onClickButtonCacheFiles(view);
                 } else {
                     Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
                 }
@@ -115,8 +115,8 @@ public class CacheCategoriesFragment extends Fragment {
                     ((MainActivity) getActivity()).refreshPoints();
 
                     cacheStatus.set_true();
-                    cacheStatus.set_function("NONE");
-                    ((MainActivity)getActivity()).onClickButtonCache(view);
+                    cacheStatus.set_function("CACHEHIDDENFILES");
+                    ((MainActivity)getActivity()).onClickButtonCacheHiddenFiles(view);
                 } else {
                     Toast.makeText(view.getContext(), "Not enough points!", Toast.LENGTH_SHORT).show();
                 }
