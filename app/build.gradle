@@ -7,7 +7,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.cache.cleaner.start.app"
+        applicationId "com.cache.cleaner.app"
         minSdk 21
         targetSdk 33
         versionCode 1
