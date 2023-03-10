@@ -115,10 +115,10 @@ public class CacheFragment extends Fragment{
                 clearCache(paths_telegram, downloaded_files);
             }
             if (Objects.equals(cacheStatus.get_function(), "CACHEFILES")) {
-//                clearCacheFiles(paths_telegram, downloaded_files);
+                clearCacheFiles(paths_telegram, downloaded_files);
             }
             if (Objects.equals(cacheStatus.get_function(), "CACHEHIDDENFILES")) {
-//                clearCacheHiddenFiles(paths_telegram, downloaded_files);
+                clearCacheHiddenFiles(paths_telegram, downloaded_files);
             }
         }
     }
