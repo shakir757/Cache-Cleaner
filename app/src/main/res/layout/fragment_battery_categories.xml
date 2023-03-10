@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:background="@drawable/bg_button_cleaning_cache"
-        android:text="Extend the battery for 20 minutes"
+        android:text="Disable unnecessary functions"
         android:fontFamily="@font/milliard"
         app:layout_constraintBottom_toTopOf="@id/button_battery_optimization"
         app:layout_constraintTop_toBottomOf="@id/button_power_saving"/>
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:background="@drawable/bg_button_cleaning_cache"
-        android:text="Battery optimization"
+        android:text="Disable GPS, Decrease  brightness"
         android:fontFamily="@font/milliard"
         app:layout_constraintTop_toBottomOf="@id/button_extend_battery"
         app:layout_constraintBottom_toBottomOf="parent"/>
