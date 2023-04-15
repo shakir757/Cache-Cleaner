@@ -30,6 +30,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.tenjin.android.TenjinSDK;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_main);
+
+        TenjinSDK instance = TenjinSDK.getInstance(this, "A9ABXYTX6G78WQRPKIYP4AUMSJW1M5KM");
+
+        String[] optInParams = {"ip_address", "advertising_id", "limit_ad_tracking", "referrer", "locale", "timezone", "build_id"};
+        instance.optInParams(optInParams);
+
+        instance.connect();
 
         mSettings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
 

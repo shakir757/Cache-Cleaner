@@ -95,7 +95,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_button_cleaning_cache"
-        android:text="Start increasing speed"
+        android:text="Improve speed"
         android:fontFamily="@font/milliard"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintBottom_toBottomOf="parent"

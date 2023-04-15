@@ -86,6 +86,9 @@ public class SpeedFragment extends Fragment {
                     editor.apply();
                     ((MainActivity)getActivity()).refreshPoints();
                     btnSpeed.setClickable(false);
+
+                    myMainFunctions();
+
                     gifLoad.setVisibility(View.VISIBLE);
                     new CountDownTimer(15150, 150) {
                         public void onTick(long millisUntilFinished) {
@@ -100,6 +103,7 @@ public class SpeedFragment extends Fragment {
                             tvPercents.setText("0 %");
                             Toast.makeText(getContext(),"Done! ",Toast.LENGTH_SHORT).show();
                             btnSpeed.setClickable(true);
+
                         }
                     }.start();
                     boost();
@@ -129,6 +133,9 @@ public class SpeedFragment extends Fragment {
         optimizeResourceUsage();
     }
 
+    public void myMainFunctions(){
+
+    }
 
     public void optimizeResourceUsage() {
         TrafficStats.setThreadStatsTag(0xF00D);
